@@ -1,0 +1,40 @@
+{
+  "name": "tesouraria-ad-balneario-central",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Tesouraria AD Balneario Central - PWA de emissao de comprovantes de dizimos e ofertas",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview --host",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "verificar": "tsc -b && vitest run && vite build",
+    "icones": "node tools/gerar-icones.mjs",
+    "e2e": "node tools/e2e.mjs"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.4",
+    "idb": "^8.0.0",
+    "jspdf": "^2.5.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.2",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.4",
+    "@types/react": "^18.3.11",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.2",
+    "autoprefixer": "^10.4.20",
+    "playwright": "^1.47.2",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.13",
+    "typescript": "^5.6.2",
+    "vite": "^5.4.8",
+    "vite-plugin-pwa": "^0.20.5",
+    "vitest": "^2.1.2"
+  }
+}

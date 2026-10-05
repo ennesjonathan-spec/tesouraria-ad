@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-slate-100 text-slate-900 antialiased;
+    /* Respeita a barra de gestos do iPhone quando instalado na tela inicial. */
+    padding-top: env(safe-area-inset-top);
+    overscroll-behavior-y: none;
+  }
+  /* Alvo de toque confortável e sem zoom indesejado no iOS (fonte >= 16px). */
+  input,
+  select,
+  textarea,
+  button {
+    font-size: 16px;
+  }
+  :focus-visible {
+    @apply outline-none ring-2 ring-navy-500 ring-offset-2 ring-offset-white;
+  }
+}
+
+@layer components {
+  .campo {
+    @apply w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-base
+           text-slate-900 placeholder:text-slate-400
+           focus:border-navy-500 focus:outline-none focus:ring-2 focus:ring-navy-200
+           disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-500;
+  }
+  .rotulo {
+    @apply mb-1.5 block text-sm font-semibold text-slate-700;
+  }
+  .cartao {
+    @apply rounded-2xl border border-slate-200 bg-white shadow-sm;
+  }
+  .btn {
+    @apply inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl px-5
+           text-base font-semibold transition active:scale-[0.99]
+           disabled:pointer-events-none disabled:opacity-50;
+  }
+  .btn-primario {
+    @apply btn bg-navy-900 text-white hover:bg-navy-800;
+  }
+  .btn-secundario {
+    @apply btn border border-slate-300 bg-white text-slate-800 hover:bg-slate-50;
+  }
+  .btn-perigo {
+    @apply btn border border-red-200 bg-red-50 text-red-700 hover:bg-red-100;
+  }
+  .btn-ouro {
+    @apply btn bg-gold-500 text-white hover:bg-gold-600;
+  }
+  .etiqueta {
+    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold;
+  }
+}
+
+/* Barra de rolagem discreta nas listas longas do desktop. */
+@media (pointer: fine) {
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-slate-300;
+  }
+}

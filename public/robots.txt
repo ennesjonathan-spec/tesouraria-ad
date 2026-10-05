@@ -1,0 +1,3 @@
+# Aplicativo interno da tesouraria: nada aqui deve ser indexado.
+User-agent: *
+Disallow: /
