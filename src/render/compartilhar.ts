@@ -80,6 +80,48 @@ export async function compartilharComprovante(
 }
 
 /**
+ * Celular: abre o menu nativo só com a imagem (e o texto), para o usuário
+ * escolher o WhatsApp e a conversa. A imagem já vai anexada.
+ * Retorna 'indisponivel' quando o aparelho não compartilha arquivos
+ * (computador): nesse caso a tela usa copiarImagem + link do WhatsApp.
+ */
+export async function compartilharImagemWhatsApp(
+  arquivos: ArquivosComprovante,
+  dados: DadosComprovante,
+): Promise<'compartilhado' | 'cancelado' | 'indisponivel'> {
+  if (!podeCompartilharArquivo(arquivos)) return 'indisponivel'
+  const arquivo = new File([arquivos.png], arquivos.nomePng, { type: 'image/png' })
+  try {
+    await navigator.share({
+      files: [arquivo],
+      title: `Comprovante ${dados.numero}`,
+      text: mensagemWhatsApp(dados),
+    })
+    return 'compartilhado'
+  } catch (e) {
+    if (e instanceof DOMException && e.name === 'AbortError') return 'cancelado'
+    return 'indisponivel'
+  }
+}
+
+/** Copia a imagem para a área de transferência (para colar com Ctrl+V no WhatsApp Web). */
+export async function copiarImagem(png: Blob): Promise<boolean> {
+  try {
+    if (
+      typeof navigator === 'undefined' ||
+      !navigator.clipboard ||
+      typeof ClipboardItem === 'undefined'
+    ) {
+      return false
+    }
+    await navigator.clipboard.write([new ClipboardItem({ 'image/png': png })])
+    return true
+  } catch {
+    return false
+  }
+}
+
+/**
  * Monta o link do WhatsApp. Com telefone, abre a conversa daquela pessoa;
  * sem telefone, abre o seletor de contatos. O arquivo precisa ser anexado
  * pelo usuário (o WhatsApp não aceita anexo por link) — por isso a tela
