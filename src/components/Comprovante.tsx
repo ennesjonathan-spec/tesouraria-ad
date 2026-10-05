@@ -10,7 +10,12 @@ import {
   gerarArquivos,
   type ArquivosComprovante,
 } from '@/render/exportar'
-import { compartilharComprovante, linkWhatsApp } from '@/render/compartilhar'
+import {
+  compartilharComprovante,
+  compartilharImagemWhatsApp,
+  copiarImagem,
+  linkWhatsApp,
+} from '@/render/compartilhar'
 import { useSettings } from '@/state/SettingsContext'
 import { mensagemErro } from '@/lib/errors'
 import { Aviso } from './ui'
@@ -120,6 +125,30 @@ export function AcoesComprovante({
     }
   }
 
+  /** Celular: menu do aparelho com a imagem anexada. Computador: painel com a cópia da imagem. */
+  async function enviarWhatsApp() {
+    if (!arquivos) return
+    setRecado(null)
+    try {
+      const r = await compartilharImagemWhatsApp(arquivos, dados)
+      if (r === 'indisponivel') setConfirmandoWhats(true)
+    } catch (e) {
+      setErro(mensagemErro(e))
+    }
+  }
+
+  async function copiarEAbrirWhatsApp() {
+    if (!arquivos) return
+    const copiou = await copiarImagem(arquivos.png)
+    window.open(linkWhatsApp(dados, telefone), '_blank', 'noopener')
+    setConfirmandoWhats(false)
+    setRecado(
+      copiou
+        ? 'Imagem copiada. Na conversa do WhatsApp, aperte Ctrl+V (ou toque em colar) e envie.'
+        : 'Não foi possível copiar a imagem. Use "Baixar imagem" e anexe pelo clipe do WhatsApp.',
+    )
+  }
+
   return (
     <div className="space-y-3">
       {erro ? <Aviso tom="erro">{erro}</Aviso> : null}
@@ -142,8 +171,9 @@ export function AcoesComprovante({
               : 'Abrir o WhatsApp para escolher o destinatário?'}
           </p>
           <Aviso tom="info">
-            O WhatsApp não aceita anexo por link. A mensagem vai pronta; para enviar a imagem,
-            use o botão <strong>Compartilhar</strong> acima e escolha o WhatsApp.
+            O WhatsApp não aceita anexo por link. Vamos <strong>copiar a imagem</strong> e abrir
+            a conversa com a mensagem pronta: lá, aperte <strong>Ctrl+V</strong> para colar a
+            imagem e envie. O envio sempre depende do seu toque.
           </Aviso>
           <div className="flex gap-2">
             <button
@@ -153,23 +183,21 @@ export function AcoesComprovante({
             >
               Voltar
             </button>
-            <a
+            <button
+              type="button"
               className="btn-ouro flex-1"
-              href={linkWhatsApp(dados, telefone)}
-              target="_blank"
-              rel="noreferrer"
-              onClick={() => setConfirmandoWhats(false)}
+              onClick={() => void copiarEAbrirWhatsApp()}
             >
-              Abrir WhatsApp
-            </a>
+              Copiar imagem e abrir WhatsApp
+            </button>
           </div>
         </div>
       ) : (
         <button
           type="button"
           className="btn-ouro w-full"
-          onClick={() => setConfirmandoWhats(true)}
-          disabled={preparando}
+          onClick={() => void enviarWhatsApp()}
+          disabled={preparando || !arquivos}
         >
           Enviar pelo WhatsApp
         </button>
