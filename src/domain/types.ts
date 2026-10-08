@@ -22,6 +22,8 @@ export interface ChurchSettings {
   endereco: string
   dirigente: string
   tesoureiro: string
+  /** 2º tesoureiro(a); vazio = não aparece nos comprovantes. */
+  tesoureiro_2: string
   logo_url: string | null
   versiculo_rodape: string
   versiculo_ref: string
