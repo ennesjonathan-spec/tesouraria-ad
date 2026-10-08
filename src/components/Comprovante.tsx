@@ -16,6 +16,7 @@ import {
   copiarImagem,
   linkWhatsApp,
 } from '@/render/compartilhar'
+import { abrirNoRawBT, ehAndroid, imprimirNavegador, pngTermico } from '@/render/imprimir'
 import { useSettings } from '@/state/SettingsContext'
 import { mensagemErro } from '@/lib/errors'
 import { Aviso } from './ui'
@@ -220,6 +221,57 @@ export function AcoesComprovante({
         >
           Baixar imagem
         </button>
+      </div>
+
+      <div className="cartao space-y-2 p-4">
+        <p className="text-sm font-semibold text-slate-800">Imprimir na bobina (58 mm)</p>
+        {ehAndroid() ? (
+          <button
+            type="button"
+            className="btn-secundario w-full"
+            disabled={preparando}
+            onClick={() => {
+              try {
+                abrirNoRawBT(dados, config)
+                setRecado('Abrindo o RawBT. Se nada abrir, instale o app RawBT na Play Store.')
+              } catch (e) {
+                setErro(mensagemErro(e))
+              }
+            }}
+          >
+            Imprimir pelo celular (RawBT)
+          </button>
+        ) : null}
+        <div className="grid grid-cols-2 gap-2">
+          <button
+            type="button"
+            className="btn-secundario"
+            disabled={preparando}
+            onClick={() => {
+              try {
+                imprimirNavegador(dados, config)
+              } catch (e) {
+                setErro(mensagemErro(e))
+              }
+            }}
+          >
+            Imprimir (navegador)
+          </button>
+          <button
+            type="button"
+            className="btn-secundario"
+            disabled={preparando}
+            onClick={async () => {
+              try {
+                baixarBlob(await pngTermico(dados, config), `${dados.numero}-58mm.png`)
+              } catch (e) {
+                setErro(mensagemErro(e))
+              }
+            }}
+          >
+            Baixar imagem 58 mm
+          </button>
+        </div>
       </div>
 
       {aoEmitirOutro ? (
