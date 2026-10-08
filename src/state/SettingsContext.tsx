@@ -14,6 +14,7 @@ const PROVISORIO: ChurchSettings = {
   endereco: '',
   dirigente: '',
   tesoureiro: '',
+  tesoureiro_2: '',
   logo_url: null,
   versiculo_rodape: 'Deus ama quem dá com alegria.',
   versiculo_ref: '2 Coríntios 9:7',

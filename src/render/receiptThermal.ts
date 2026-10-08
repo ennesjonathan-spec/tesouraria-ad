@@ -215,15 +215,24 @@ export function desenharComprovanteTermico(
   y = tracejado(ctx, y)
 
   // Assinaturas (identificação, sem linha de assinatura: comprovante digital)
-  ctx.font = `bold 14px ${FONTE}`
-  y = paragrafo(ctx, 'TESOURARIA', M, y, LC, 17)
-  ctx.font = `bold 20px ${FONTE}`
-  y = paragrafo(ctx, config.tesoureiro, M, y + 1, LC, 24, 'left', 2)
-  y += 6
-  ctx.font = `bold 14px ${FONTE}`
-  y = paragrafo(ctx, 'PASTOR DIRIGENTE', M, y, LC, 17)
-  ctx.font = `bold 20px ${FONTE}`
-  y = paragrafo(ctx, config.dirigente, M, y + 1, LC, 24, 'left', 2)
+  const t2 = (config.tesoureiro_2 ?? '').trim()
+  const blocos: [string, string][] = t2
+    ? [
+        ['1º TESOUREIRO', config.tesoureiro],
+        ['2º TESOUREIRO', t2],
+        ['PASTOR DIRIGENTE', config.dirigente],
+      ]
+    : [
+        ['TESOUREIRO', config.tesoureiro],
+        ['PASTOR DIRIGENTE', config.dirigente],
+      ]
+  blocos.forEach(([rotulo, nome], i) => {
+    if (i > 0) y += 6
+    ctx.font = `bold 14px ${FONTE}`
+    y = paragrafo(ctx, rotulo, M, y, LC, 17)
+    ctx.font = `bold 20px ${FONTE}`
+    y = paragrafo(ctx, nome, M, y + 1, LC, 24, 'left', 2)
+  })
 
   // Espaço para o destaque do papel
   const alturaFinal = Math.min(canvas.height, Math.ceil(y + 56))

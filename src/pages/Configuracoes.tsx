@@ -34,6 +34,7 @@ export function Configuracoes() {
         endereco: rascunho.endereco,
         dirigente: rascunho.dirigente,
         tesoureiro: rascunho.tesoureiro,
+        tesoureiro_2: rascunho.tesoureiro_2 ?? '',
         versiculo_rodape: rascunho.versiculo_rodape,
         versiculo_ref: rascunho.versiculo_ref,
         aviso_rodape: rascunho.aviso_rodape,
@@ -156,9 +157,14 @@ export function Configuracoes() {
               onChange={(e) => setRascunho({ ...rascunho, dirigente: e.target.value })}
             />
             <Campo
-              rotulo="Tesoureiro"
+              rotulo="1º Tesoureiro"
               value={rascunho.tesoureiro}
               onChange={(e) => setRascunho({ ...rascunho, tesoureiro: e.target.value })}
+            />
+            <Campo
+              rotulo="2º Tesoureiro"
+              value={rascunho.tesoureiro_2 ?? ''}
+              onChange={(e) => setRascunho({ ...rascunho, tesoureiro_2: e.target.value })}
             />
           </section>
 

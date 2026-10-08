@@ -207,7 +207,11 @@ export function Relatorios() {
     doc.setFontSize(9)
     doc.setFont('helvetica', 'normal')
     doc.text(`${config.dirigente}  —  Pastor Dirigente`, M, y)
-    doc.text(`${config.tesoureiro}  —  Tesoureiro`, 195 - M, y, { align: 'right' })
+    doc.text(`${config.tesoureiro}  —  1º Tesoureiro`, 195 - M, y, { align: 'right' })
+    if (config.tesoureiro_2) {
+      y += 5
+      doc.text(`${config.tesoureiro_2}  —  2º Tesoureiro`, 195 - M, y, { align: 'right' })
+    }
 
     doc.save(`${nomeBase}.pdf`)
   }

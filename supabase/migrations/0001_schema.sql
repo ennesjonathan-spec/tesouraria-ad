@@ -53,6 +53,7 @@ create table if not exists public.church_settings (
   endereco           text not null,
   dirigente          text not null,
   tesoureiro         text not null,
+  tesoureiro_2       text not null default '',
   logo_url           text,
   versiculo_rodape   text not null default 'Deus ama quem dá com alegria.',
   versiculo_ref      text not null default '2 Coríntios 9:7',

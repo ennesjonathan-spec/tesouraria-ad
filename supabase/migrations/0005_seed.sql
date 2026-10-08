@@ -7,7 +7,7 @@
 -- =====================================================================
 
 insert into public.church_settings (
-  id, nome_igreja, congregacao, codigo, endereco, dirigente, tesoureiro, prefixo_comprovante)
+  id, nome_igreja, congregacao, codigo, endereco, dirigente, tesoureiro, tesoureiro_2, prefixo_comprovante)
 values (
   1,
   'Igreja Evangélica Assembleia de Deus',
@@ -15,7 +15,8 @@ values (
   '124',
   'Av. Márcio G. da Silva, Qd. B, Lt. 20, Jd. Balneário Meia Ponte, Goiânia/GO',
   'Pedro João Alves da Silva Filho',
-  'Jonathan Ennenes Pereira',
+  'Jonathan Ennes Pereira',
+  'Maria José Machado Lemos',
   '124')
 on conflict (id) do nothing;
 

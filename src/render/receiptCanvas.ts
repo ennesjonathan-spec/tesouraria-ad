@@ -524,23 +524,29 @@ export function desenharComprovante(
   const faixaY = A - 86
   ctx.fillStyle = c.primaria
   ctx.fillRect(0, faixaY, L, 86)
-  ctx.textAlign = 'left'
-  ctx.fillStyle = 'rgba(255,255,255,0.65)'
-  ctx.font = `600 16px ${FONTE}`
-  ctx.fillText('TESOURARIA', M, faixaY + 32)
-  ctx.fillStyle = c.secundaria
-  ctx.font = `600 22px ${FONTE}`
-  textoMultilinha(ctx, config.tesoureiro, M, faixaY + 60, LC * 0.55, 24, 1)
-
-  ctx.textAlign = 'right'
-  ctx.fillStyle = 'rgba(255,255,255,0.65)'
-  ctx.font = `600 16px ${FONTE}`
-  ctx.fillText('PASTOR DIRIGENTE', L - M, faixaY + 32)
-  ctx.fillStyle = c.secundaria
-  ctx.font = `600 22px ${FONTE}`
-  const tamDir = ajustarFonte(ctx, config.dirigente, LC * 0.45, 22, '600', 15)
-  ctx.font = `600 ${tamDir}px ${FONTE}`
-  ctx.fillText(config.dirigente, L - M, faixaY + 60)
+  const t2 = (config.tesoureiro_2 ?? '').trim()
+  // Três assinaturas (1º tesoureiro, 2º tesoureiro, dirigente). Sem 2º tesoureiro,
+  // volta ao desenho de duas assinaturas.
+  const assinaturas: { rotulo: string; nome: string; x: number; alinha: CanvasTextAlign; larg: number }[] = t2
+    ? [
+        { rotulo: '1º TESOUREIRO', nome: config.tesoureiro, x: M, alinha: 'left', larg: LC * 0.31 },
+        { rotulo: '2º TESOUREIRO', nome: t2, x: L / 2, alinha: 'center', larg: LC * 0.31 },
+        { rotulo: 'PASTOR DIRIGENTE', nome: config.dirigente, x: L - M, alinha: 'right', larg: LC * 0.33 },
+      ]
+    : [
+        { rotulo: 'TESOUREIRO', nome: config.tesoureiro, x: M, alinha: 'left', larg: LC * 0.5 },
+        { rotulo: 'PASTOR DIRIGENTE', nome: config.dirigente, x: L - M, alinha: 'right', larg: LC * 0.45 },
+      ]
+  for (const col of assinaturas) {
+    ctx.textAlign = col.alinha
+    ctx.fillStyle = 'rgba(255,255,255,0.65)'
+    ctx.font = `600 15px ${FONTE}`
+    ctx.fillText(col.rotulo, col.x, faixaY + 32)
+    ctx.fillStyle = c.secundaria
+    const tam = ajustarFonte(ctx, col.nome, col.larg, 22, '600', 14)
+    ctx.font = `600 ${tam}px ${FONTE}`
+    ctx.fillText(col.nome, col.x, faixaY + 60)
+  }
 
   // Selo de cancelado por último, para atravessar o documento inteiro e não
   // ser coberto pelas faixas brancas da tabela.
